@@ -37,6 +37,14 @@
         <lombok.version>1.16.20</lombok.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>TreibhausNexus</id>
+            <name>RWTH IDSG Nexus Repository</name>
+            <url>https://treibhaus.informatik.rwth-aachen.de/nexus/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -46,6 +54,19 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
