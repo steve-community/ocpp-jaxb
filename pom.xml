@@ -6,7 +6,7 @@
 
     <groupId>de.rwth.idsg</groupId>
     <artifactId>ocpp-jaxb</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <packaging>jar</packaging>
 
     <organization>
@@ -127,6 +127,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.9</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
