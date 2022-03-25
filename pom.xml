@@ -17,7 +17,7 @@
     <developers>
         <developer>
             <name>Sevket Goekay</name>
-            <email>goekay@dbis.rwth-aachen.de</email>
+            <email>sevketgokay@gmail.com</email>
             <url>https://github.com/goekay</url>
         </developer>
     </developers>
@@ -34,22 +34,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <cxf.version>3.2.4</cxf.version>
-        <lombok.version>1.16.20</lombok.version>
+        <lombok.version>1.18.22</lombok.version>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>TreibhausNexus</id>
-            <name>RWTH IDSG Nexus Repository</name>
-            <url>https://treibhaus.informatik.rwth-aachen.de/nexus/repository/maven-releases/</url>
-        </repository>
-    </distributionManagement>
 
     <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.10.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -58,7 +50,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -130,7 +122,7 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.9.9</version>
+            <version>2.10.14</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
