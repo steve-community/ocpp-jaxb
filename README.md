@@ -12,3 +12,30 @@ The classes can be found within the following packages:
 * OCPP 1.5: `ocpp.cp._2012._06` and `ocpp.cs._2012._06`
 * OCPP 1.6: `ocpp.cp._2015._10` and `ocpp.cs._2015._10`
 * OCPP 2.0: `ocpp._2020._03`
+
+# How to use it?
+
+This package is not pushed to Maven central... yet. But still you can use it via [jitpack.io](https://jitpack.io/docs/).
+
+Add the jitpack repository to your maven repositories:
+
+ ```
+<repositories>
+    ...
+    <repository>
+        <id>JitPack</id>
+        <url>https://jitpack.io</url>
+    </repository>
+    ...
+</repositories>
+ ```
+
+Then, add the following to your pom.xml (use any version from [github tags page](https://github.com/RWTH-i5-IDSG/ocpp-jaxb/tags)):
+
+ ```
+<dependency>
+    <groupId>com.github.RWTH-i5-IDSG</groupId>
+    <artifactId>ocpp-jaxb</artifactId>
+    <version>${ocpp-jaxb.version}</version>
+</dependency>
+ ```
