@@ -6,12 +6,12 @@
 
     <groupId>de.rwth.idsg</groupId>
     <artifactId>ocpp-jaxb</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <packaging>jar</packaging>
 
     <organization>
-        <name>RWTH I5 IDSG</name>
-        <url>http://dbis.rwth-aachen.de/cms/teaching/IDSG</url>
+        <name>SteVe Community Team</name>
+        <url>https://github.com/steve-community/steve</url>
     </organization>
 
     <developers>
