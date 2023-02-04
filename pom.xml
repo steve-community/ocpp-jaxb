@@ -116,13 +116,59 @@
                 </dependencies>
             </plugin>
             <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <id>add-request-interface</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <filesToInclude>${basedir}/src/main/resources/OCPP-2.0.1_part3_JSON_schemas/*Request.json</filesToInclude>
+                            <preserveDir>false</preserveDir>
+                            <outputDir>${project.build.directory}/generated-resources</outputDir>
+                            <replacements>
+                                <replacement>
+                                    <token>"definitions"</token>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"],
+  "definitions"</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-response-interface</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <filesToInclude>${basedir}/src/main/resources/OCPP-2.0.1_part3_JSON_schemas/*Response.json</filesToInclude>
+                            <preserveDir>false</preserveDir>
+                            <outputDir>${project.build.directory}/generated-resources</outputDir>
+                            <replacements>
+                                <replacement>
+                                    <token>"definitions"</token>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"],
+  "definitions"</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.jsonschema2pojo</groupId>
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>1.1.1</version>
                 <configuration>
+                    <sourceDirectory>${project.build.directory}/generated-resources</sourceDirectory>
                     <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                    <sourceDirectory>${basedir}/src/main/resources/OCPP-2.0.1_part3_JSON_schemas</sourceDirectory>
                     <targetPackage>ocpp._2020._03</targetPackage>
+                    <generateBuilders>true</generateBuilders>
                     <includeJsr303Annotations>true</includeJsr303Annotations>
                     <useJodaDates>true</useJodaDates>
                     <useJodaLocalDates>true</useJodaLocalDates>
@@ -130,6 +176,7 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
