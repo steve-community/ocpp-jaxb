@@ -6,7 +6,7 @@
 
     <groupId>de.rwth.idsg</groupId>
     <artifactId>ocpp-jaxb</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <packaging>jar</packaging>
 
     <organization>
