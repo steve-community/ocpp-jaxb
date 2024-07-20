@@ -1,9 +1,9 @@
-<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+<jaxws:bindings xmlns:jaxws="https://jakarta.ee/xml/ns/jaxws"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+                xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
                 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                xmlns:annox="http://annox.dev.java.net"
-                xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+                xmlns:annox="urn:jaxb.jvnet.org:annox"
+                xmlns:inheritance="urn:jaxb.jvnet.org:plugin:inheritance"
                 jaxb:extensionBindingPrefixes="inheritance annox">
 
     <jaxws:bindings node="wsdl:definitions/wsdl:types/xs:schema">
