@@ -127,9 +127,9 @@
                             <outputDir>${project.build.directory}/generated-resources</outputDir>
                             <replacements>
                                 <replacement>
-                                    <token>"definitions"</token>
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"],
-  "definitions"</value>
+                                    <token>"\$schema"</token>
+                                    <!-- &#10; is html code for line break -->
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], &#10;  "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -146,9 +146,9 @@
                             <outputDir>${project.build.directory}/generated-resources</outputDir>
                             <replacements>
                                 <replacement>
-                                    <token>"definitions"</token>
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"],
-  "definitions"</value>
+                                    <token>"\$schema"</token>
+                                    <!-- &#10; is html code for line break -->
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], &#10;  "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
