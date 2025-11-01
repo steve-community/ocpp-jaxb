@@ -4,6 +4,7 @@ Java data model mappings for the following [OCPP](https://www.openchargealliance
 * OCPP 1.5 (targets JSON and SOAP)
 * OCPP 1.6 (targets JSON and SOAP)
 * OCPP 2.0.1 (targets JSON, requires [Jackson](https://github.com/FasterXML/jackson))
+* Improved security for OCPP 1.6-J (targets JSON)
 
 The Java data model covers all requests and responses between the central system and charge points.
 
@@ -12,6 +13,7 @@ The classes can be found within the following packages:
 * OCPP 1.5: `ocpp.cp._2012._06` and `ocpp.cs._2012._06`
 * OCPP 1.6: `ocpp.cp._2015._10` and `ocpp.cs._2015._10`
 * OCPP 2.0.1: `ocpp._2020._03`
+* Improved security for OCPP 1.6-J: `ocpp._2022._02.security`
 
 # How to use it?
 

@@ -33,6 +33,9 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <ocpp-1.6-security-schemas-dir>OCPP-1.6_Security_3rd_Edition_schemas</ocpp-1.6-security-schemas-dir>
+        <ocpp-2.0.1-schemas-dir>OCPP-2.0.1_part3_JSON_schemas</ocpp-2.0.1-schemas-dir>
+
         <cxf.version>4.0.5</cxf.version>
         <lombok.version>1.18.34</lombok.version>
     </properties>
@@ -115,40 +118,87 @@
                 <artifactId>replacer</artifactId>
                 <version>1.5.3</version>
                 <executions>
+
+                    <!-- Unlike Ocpp 2 schema files, Ocpp 1.6 Security schema files do not use "Request" postfix in name
+                         for request messages, i.e. they are like InstallCertificate.json instead of InstallCertificateRequest.json.
+                         This creates a minor problem when selecting/filtering the files to add the interface RequestType.
+
+                         Solution: Apply RequestType to all files first. The next execution 'add-response-interface-ocpp-1.6-security'
+                         will select the Response files only and override the RequestType with the proper ResponseType.
+                          -->
                     <execution>
-                        <id>add-request-interface</id>
+                        <id>add-request-interface-ocpp-1.6j-security</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>replace</goal>
                         </goals>
                         <configuration>
-                            <filesToInclude>${basedir}/src/main/resources/OCPP-2.0.1_part3_JSON_schemas/*Request.json</filesToInclude>
+                            <filesToInclude>${basedir}/src/main/resources/${ocpp-1.6-security-schemas-dir}/*.json</filesToInclude>
                             <preserveDir>false</preserveDir>
-                            <outputDir>${project.build.directory}/generated-resources</outputDir>
+                            <outputDir>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</outputDir>
                             <replacements>
                                 <replacement>
-                                    <token>"definitions"</token>
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"],
-  "definitions"</value>
+                                    <token>"\$schema"</token>
+                                    <!-- &#10; is html code for line break -->
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], &#10;  "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>add-response-interface</id>
+                        <id>add-response-interface-ocpp-1.6j-security</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>replace</goal>
                         </goals>
                         <configuration>
-                            <filesToInclude>${basedir}/src/main/resources/OCPP-2.0.1_part3_JSON_schemas/*Response.json</filesToInclude>
+                            <filesToInclude>${basedir}/src/main/resources/${ocpp-1.6-security-schemas-dir}/*Response.json</filesToInclude>
                             <preserveDir>false</preserveDir>
-                            <outputDir>${project.build.directory}/generated-resources</outputDir>
+                            <outputDir>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</outputDir>
                             <replacements>
                                 <replacement>
-                                    <token>"definitions"</token>
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"],
-  "definitions"</value>
+                                    <token>"\$schema"</token>
+                                    <!-- &#10; is html code for line break -->
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], &#10;  "\$schema"</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>add-request-interface-ocpp-2.0.1</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <filesToInclude>${basedir}/src/main/resources/${ocpp-2.0.1-schemas-dir}/*Request.json</filesToInclude>
+                            <preserveDir>false</preserveDir>
+                            <outputDir>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</outputDir>
+                            <replacements>
+                                <replacement>
+                                    <token>"\$schema"</token>
+                                    <!-- &#10; is html code for line break -->
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], &#10;  "\$schema"</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-response-interface-ocpp-2.0.1</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <filesToInclude>${basedir}/src/main/resources/${ocpp-2.0.1-schemas-dir}/*Response.json</filesToInclude>
+                            <preserveDir>false</preserveDir>
+                            <outputDir>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</outputDir>
+                            <replacements>
+                                <replacement>
+                                    <token>"\$schema"</token>
+                                    <!-- &#10; is html code for line break -->
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], &#10;  "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -160,9 +210,7 @@
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <sourceDirectory>${project.build.directory}/generated-resources</sourceDirectory>
                     <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                    <targetPackage>ocpp._2020._03</targetPackage>
                     <generateBuilders>true</generateBuilders>
                     <includeJsr303Annotations>true</includeJsr303Annotations>
                     <includeGeneratedAnnotation>false</includeGeneratedAnnotation>
@@ -173,10 +221,27 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>generate-ocpp-1.6j-security</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
+                        <configuration>
+                            <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</sourceDirectory>
+                            <!-- using the date of "OCPP 1.6 security whitepaper edition 3" as package-->
+                            <targetPackage>ocpp._2022._02.security</targetPackage>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-ocpp-2.0.1</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</sourceDirectory>
+                            <targetPackage>ocpp._2020._03</targetPackage>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
