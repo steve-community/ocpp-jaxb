@@ -40,6 +40,20 @@
         <lombok.version>1.18.34</lombok.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/steve-community/ocpp-jaxb.git</connection>
+        <developerConnection>scm:git:git@github.com:steve-community/ocpp-jaxb.git</developerConnection>
+        <url>https://github.com/steve-community/ocpp-jaxb</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/steve-community/ocpp-jaxb</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -62,6 +76,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.1.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
