@@ -42,7 +42,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/steve-community/ocpp-jaxb.git</connection>
-        <developerConnection>scm:git:git@github.com:steve-community/ocpp-jaxb.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/steve-community/ocpp-jaxb.git</developerConnection>
         <url>https://github.com/steve-community/ocpp-jaxb</url>
         <tag>HEAD</tag>
     </scm>
