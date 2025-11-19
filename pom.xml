@@ -254,6 +254,7 @@
                             <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</sourceDirectory>
                             <!-- using the date of "OCPP 1.6 security whitepaper edition 3" as package-->
                             <targetPackage>ocpp._2022._02.security</targetPackage>
+                            <customDateTimePattern>yyyy-MM-dd&apos;T&apos;HH:mm:ss.SSS&apos;Z&apos;</customDateTimePattern>
                         </configuration>
                     </execution>
                     <execution>
@@ -265,6 +266,7 @@
                         <configuration>
                             <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</sourceDirectory>
                             <targetPackage>ocpp._2020._03</targetPackage>
+                            <customDateTimePattern>yyyy-MM-dd&apos;T&apos;HH:mm:ss.SSS&apos;Z&apos;</customDateTimePattern>
                         </configuration>
                     </execution>
                 </executions>
@@ -319,6 +321,7 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -329,6 +332,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>5.10.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>2.17.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
