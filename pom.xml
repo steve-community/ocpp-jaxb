@@ -4,7 +4,7 @@
 
     <groupId>de.rwth.idsg</groupId>
     <artifactId>ocpp-jaxb</artifactId>
-    <version>0.0.12-SNAPSHOT</version>
+    <version>0.0.12</version>
     <packaging>jar</packaging>
 
     <organization>
@@ -42,7 +42,7 @@
         <connection>scm:git:https://github.com/steve-community/ocpp-jaxb.git</connection>
         <developerConnection>scm:git:https://github.com/steve-community/ocpp-jaxb.git</developerConnection>
         <url>https://github.com/steve-community/ocpp-jaxb</url>
-        <tag>HEAD</tag>
+        <tag>0.0.12</tag>
     </scm>
 
     <distributionManagement>
@@ -254,7 +254,7 @@
                             <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</sourceDirectory>
                             <!-- using the date of "OCPP 1.6 security whitepaper edition 3" as package-->
                             <targetPackage>ocpp._2022._02.security</targetPackage>
-                            <customDateTimePattern>yyyy-MM-dd&apos;T&apos;HH:mm:ss.SSS&apos;Z&apos;</customDateTimePattern>
+                            <customDateTimePattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</customDateTimePattern>
                         </configuration>
                     </execution>
                     <execution>
@@ -266,7 +266,7 @@
                         <configuration>
                             <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</sourceDirectory>
                             <targetPackage>ocpp._2020._03</targetPackage>
-                            <customDateTimePattern>yyyy-MM-dd&apos;T&apos;HH:mm:ss.SSS&apos;Z&apos;</customDateTimePattern>
+                            <customDateTimePattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</customDateTimePattern>
                         </configuration>
                     </execution>
                 </executions>
