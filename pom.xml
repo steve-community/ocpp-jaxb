@@ -305,21 +305,19 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.12.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
+
+        <!-- Jackson 3.x components rely on 2.x annotations; there are no separate 3.x jackson-annotations -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.17.2</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>3.1.0</version>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.20</version>
         </dependency>
 
         <dependency>
@@ -335,9 +333,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <groupId>tools.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
-            <version>2.17.2</version>
+            <version>3.0.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

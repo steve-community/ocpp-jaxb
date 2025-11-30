@@ -1,17 +1,18 @@
 package de.rwth.idsg.ocpp.jaxb;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import ocpp._2022._02.security.GetLog;
 import ocpp._2022._02.security.LogParametersType;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.datatype.joda.JodaModule;
 
 public class DateTimePatternTest {
 
-    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JodaModule());
+    private final ObjectMapper mapper = JsonMapper.builder().addModule(new JodaModule()).build();
 
     @Test
     public void validateStringFormat() throws Exception {
