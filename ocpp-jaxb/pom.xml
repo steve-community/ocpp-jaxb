@@ -179,6 +179,7 @@
                     <useJodaDates>true</useJodaDates>
                     <useJodaLocalDates>true</useJodaLocalDates>
                     <useJodaLocalTimes>true</useJodaLocalTimes>
+                    <customAnnotator>de.rwth.idsg.ocpp.jaxb.CustomAnnotator</customAnnotator>
                 </configuration>
                 <executions>
                     <execution>
@@ -191,7 +192,6 @@
                             <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</sourceDirectory>
                             <!-- using the date of "OCPP 1.6 security whitepaper edition 3" as package-->
                             <targetPackage>ocpp._2022._02.security</targetPackage>
-                            <customDateTimePattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</customDateTimePattern>
                         </configuration>
                     </execution>
                     <execution>
@@ -203,10 +203,16 @@
                         <configuration>
                             <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</sourceDirectory>
                             <targetPackage>ocpp._2020._03</targetPackage>
-                            <customDateTimePattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</customDateTimePattern>
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>ocpp-custom</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -215,6 +221,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>ocpp-custom</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
