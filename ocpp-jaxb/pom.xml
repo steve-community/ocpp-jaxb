@@ -180,6 +180,11 @@
                     <useJodaLocalDates>true</useJodaLocalDates>
                     <useJodaLocalTimes>true</useJodaLocalTimes>
                     <customAnnotator>de.rwth.idsg.ocpp.jaxb.CustomAnnotator</customAnnotator>
+
+                    <includeToString>false</includeToString>
+                    <includeGetters>false</includeGetters>
+                    <includeSetters>false</includeSetters>
+                    <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
                 </configuration>
                 <executions>
                     <execution>
