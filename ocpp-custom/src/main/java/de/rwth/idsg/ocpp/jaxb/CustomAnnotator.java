@@ -1,8 +1,6 @@
 package de.rwth.idsg.ocpp.jaxb;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import lombok.EqualsAndHashCode;
@@ -11,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.joda.time.DateTime;
 import org.jsonschema2pojo.AbstractAnnotator;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 public class CustomAnnotator extends AbstractAnnotator {
 
@@ -27,7 +27,7 @@ public class CustomAnnotator extends AbstractAnnotator {
     @Override
     public void propertyField(JFieldVar field, JDefinedClass clazz,
                               String propertyName,
-                              com.fasterxml.jackson.databind.JsonNode propertyNode) {
+                              JsonNode propertyNode) {
         super.propertyField(field, clazz, propertyName, propertyNode);
 
         // Add custom converter annotations to all DateTime fields
