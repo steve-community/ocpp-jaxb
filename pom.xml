@@ -3,9 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.rwth.idsg</groupId>
-    <artifactId>ocpp-jaxb</artifactId>
+    <artifactId>ocpp-parent</artifactId>
     <version>0.0.14-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+
+    <!-- Define the modules in build order -->
+    <modules>
+        <module>ocpp-custom</module>
+        <module>ocpp-jaxb</module>
+    </modules>
 
     <organization>
         <name>SteVe Community Team</name>
@@ -31,11 +37,10 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <ocpp-1.6-security-schemas-dir>OCPP-1.6_Security_3rd_Edition_schemas</ocpp-1.6-security-schemas-dir>
-        <ocpp-2.0.1-schemas-dir>OCPP-2.0.1_part3_JSON_schemas</ocpp-2.0.1-schemas-dir>
-
         <cxf.version>4.0.5</cxf.version>
         <lombok.version>1.18.34</lombok.version>
+        <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
+        <jackson.version>3.0.3</jackson.version>
     </properties>
 
     <scm>
@@ -80,196 +85,9 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <version>${cxf.version}</version>
-                <configuration>
-                    <sourceRoot>${project.build.directory}/generated-sources</sourceRoot>
-                    <wsdlRoot>${basedir}/src/main/resources/wsdl</wsdlRoot>
-                    <defaultOptions>
-                        <bindingFiles>
-                            <bindingFile>${basedir}/src/main/resources/wsdl-binding/ocpp_binding.xml</bindingFile>
-                            <bindingFile>${basedir}/src/main/resources/wsdl-binding/async_binding.xml</bindingFile>
-                            <bindingFile>${basedir}/src/main/resources/wsdl-binding/add_interface.xml</bindingFile>
-                        </bindingFiles>
-                        <extraargs>
-                            <extraarg>-xjc-Xfluent-api</extraarg>
-                            <extraarg>-xjc-Xinheritance</extraarg>
-                            <extraarg>-xjc-Xannotate</extraarg>
-                            <!--<extraarg>-verbose</extraarg>-->
-                            <extraarg>-exsh</extraarg>
-                            <extraarg>true</extraarg>
-                        </extraargs>
-                    </defaultOptions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok</artifactId>
-                        <version>${lombok.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jvnet.jaxb</groupId>
-                        <artifactId>jaxb-plugins</artifactId>
-                        <version>4.0.8</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jvnet.jaxb</groupId>
-                        <artifactId>jaxb-plugin-annotate</artifactId>
-                        <version>4.0.8</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.3</version>
-                <executions>
-
-                    <!-- Unlike Ocpp 2 schema files, Ocpp 1.6 Security schema files do not use "Request" postfix in name
-                         for request messages, i.e. they are like InstallCertificate.json instead of InstallCertificateRequest.json.
-                         This creates a minor problem when selecting/filtering the files to add the interface RequestType.
-
-                         Solution: Apply RequestType to all files first. The next execution 'add-response-interface-ocpp-1.6-security'
-                         will select the Response files only and override the RequestType with the proper ResponseType.
-                          -->
-                    <execution>
-                        <id>add-request-interface-ocpp-1.6j-security</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                        <configuration>
-                            <filesToInclude>${basedir}/src/main/resources/${ocpp-1.6-security-schemas-dir}/*.json</filesToInclude>
-                            <preserveDir>false</preserveDir>
-                            <outputDir>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</outputDir>
-                            <replacements>
-                                <replacement>
-                                    <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], 
-  "\$schema"</value>
-                                </replacement>
-                            </replacements>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-response-interface-ocpp-1.6j-security</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                        <configuration>
-                            <filesToInclude>${basedir}/src/main/resources/${ocpp-1.6-security-schemas-dir}/*Response.json</filesToInclude>
-                            <preserveDir>false</preserveDir>
-                            <outputDir>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</outputDir>
-                            <replacements>
-                                <replacement>
-                                    <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], 
-  "\$schema"</value>
-                                </replacement>
-                            </replacements>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>add-request-interface-ocpp-2.0.1</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                        <configuration>
-                            <filesToInclude>${basedir}/src/main/resources/${ocpp-2.0.1-schemas-dir}/*Request.json</filesToInclude>
-                            <preserveDir>false</preserveDir>
-                            <outputDir>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</outputDir>
-                            <replacements>
-                                <replacement>
-                                    <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], 
-  "\$schema"</value>
-                                </replacement>
-                            </replacements>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-response-interface-ocpp-2.0.1</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                        <configuration>
-                            <filesToInclude>${basedir}/src/main/resources/${ocpp-2.0.1-schemas-dir}/*Response.json</filesToInclude>
-                            <preserveDir>false</preserveDir>
-                            <outputDir>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</outputDir>
-                            <replacements>
-                                <replacement>
-                                    <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], 
-  "\$schema"</value>
-                                </replacement>
-                            </replacements>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jsonschema2pojo</groupId>
-                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                    <generateBuilders>true</generateBuilders>
-                    <includeJsr303Annotations>true</includeJsr303Annotations>
-                    <includeGeneratedAnnotation>false</includeGeneratedAnnotation>
-                    <useJakartaValidation>true</useJakartaValidation>
-                    <useJodaDates>true</useJodaDates>
-                    <useJodaLocalDates>true</useJodaLocalDates>
-                    <useJodaLocalTimes>true</useJodaLocalTimes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-ocpp-1.6j-security</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-1.6-security-schemas-dir}</sourceDirectory>
-                            <!-- using the date of "OCPP 1.6 security whitepaper edition 3" as package-->
-                            <targetPackage>ocpp._2022._02.security</targetPackage>
-                            <customDateTimePattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</customDateTimePattern>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>generate-ocpp-2.0.1</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</sourceDirectory>
-                            <targetPackage>ocpp._2020._03</targetPackage>
-                            <customDateTimePattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</customDateTimePattern>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -318,6 +136,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.20</version>
+        </dependency>
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
