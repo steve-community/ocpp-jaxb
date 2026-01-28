@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import tools.jackson.databind.BeanDescription;
 import tools.jackson.databind.SerializationConfig;
 import tools.jackson.databind.ValueSerializer;
-import tools.jackson.databind.deser.bean.BeanDeserializer;
-import tools.jackson.databind.ser.BeanSerializer;
 import tools.jackson.databind.ser.ValueSerializerModifier;
 import tools.jackson.databind.ser.bean.BeanSerializerBase;
 
@@ -15,7 +13,6 @@ import jakarta.validation.Validator;
 public class BeanSerializerModifierWithValidation extends ValueSerializerModifier {
 
     private final Validator validator;
-
 
     @Override
     public ValueSerializer<?> modifySerializer(SerializationConfig config,
