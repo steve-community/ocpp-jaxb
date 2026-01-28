@@ -1,6 +1,10 @@
 package de.rwth.idsg.ocpp.jaxb;
 
 import de.rwth.idsg.ocpp.jaxb.validation.BeanValidationModule;
+import ocpp._2020._03.CustomData;
+import ocpp._2020._03.SecurityEventNotificationRequest;
+import ocpp.cs._2015._10.AuthorizeResponse;
+import ocpp.cs._2015._10.IdTagInfo;
 import ocpp.cs._2015._10.StartTransactionRequest;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +16,6 @@ import tools.jackson.datatype.joda.JodaModule;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -87,6 +90,30 @@ public class BeanSerializerValidationTest {
 
         Assertions.assertEquals("idTag", violation.getPropertyPath().toString());
         Assertions.assertEquals("size must be between 0 and 20", violation.getMessage());
+    }
+
+    @Test
+    public void embeddedCustomDataEmpty() {
+        var req = new SecurityEventNotificationRequest()
+            .withType("type")
+            .withTimestamp(DateTime.now())
+            .withCustomData(new CustomData());
+
+        var exception = assertThrows(ConstraintViolationException.class, () -> mapper.writeValueAsString(req));
+
+        var violations = exception.getConstraintViolations();
+        checkViolatingNullFields(Set.of("customData.vendorId"), violations);
+    }
+
+    @Test
+    public void embeddedIdTagInfoEmpty() {
+        var req = new AuthorizeResponse()
+            .withIdTagInfo(new IdTagInfo());
+
+        var exception = assertThrows(ConstraintViolationException.class, () -> mapper.writeValueAsString(req));
+
+        var violations = exception.getConstraintViolations();
+        checkViolatingNullFields(Set.of("idTagInfo.status"), violations);
     }
 
     private static void checkViolatingNullFields(Set<String> expected, Set<ConstraintViolation<?>> violations) {

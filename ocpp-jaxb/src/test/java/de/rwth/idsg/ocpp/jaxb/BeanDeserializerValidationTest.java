@@ -1,11 +1,16 @@
 package de.rwth.idsg.ocpp.jaxb;
 
 import de.rwth.idsg.ocpp.jaxb.validation.BeanValidationModule;
+import ocpp._2020._03.CustomData;
+import ocpp._2020._03.SecurityEventNotificationRequest;
+import ocpp.cs._2015._10.AuthorizeResponse;
+import ocpp.cs._2015._10.IdTagInfo;
 import ocpp.cs._2015._10.StartTransactionRequest;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.datatype.joda.JodaModule;
@@ -99,7 +104,38 @@ public class BeanDeserializerValidationTest {
 
         Assertions.assertEquals("idTag", violation.getPropertyPath().toString());
         Assertions.assertEquals("size must be between 0 and 20", violation.getMessage());
+    }
 
+    @Test
+    public void embeddedCustomDataEmpty() {
+        var req = new SecurityEventNotificationRequest()
+            .withType("type")
+            .withTimestamp(DateTime.now())
+            .withCustomData(new CustomData());
+
+        String input = mapper.writeValueAsString(req);
+
+        var exception = assertThrows(DatabindException.class, () -> mapper.readValue(input, SecurityEventNotificationRequest.class));
+
+        Throwable cause = exception.getCause();
+        Assertions.assertInstanceOf(ConstraintViolationException.class, cause);
+
+        Assertions.assertEquals("vendorId: must not be null", cause.getMessage());
+    }
+
+    @Test
+    public void embeddedIdTagInfoEmpty() {
+        var req = new AuthorizeResponse()
+            .withIdTagInfo(new IdTagInfo());
+
+        String input = mapper.writeValueAsString(req);
+
+        var exception = assertThrows(DatabindException.class, () -> mapper.readValue(input, AuthorizeResponse.class));
+
+        Throwable cause = exception.getCause();
+        Assertions.assertInstanceOf(ConstraintViolationException.class, cause);
+
+        Assertions.assertEquals("status: must not be null", cause.getMessage());
     }
 
     private static void checkViolatingNullFields(Set<String> expected, Set<ConstraintViolation<?>> violations) {
