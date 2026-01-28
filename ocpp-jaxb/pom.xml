@@ -32,10 +32,16 @@
                             <bindingFile>${basedir}/src/main/resources/wsdl-binding/add_interface.xml</bindingFile>
                         </bindingFiles>
                         <extraargs>
+                            <extraarg>-verbose</extraarg>
+                            <extraarg>-frontend</extraarg>
+                            <extraarg>krasa</extraarg>
+                            <extraarg>-xjc-XReplacePrimitives</extraarg>
+                            <extraarg>-xjc-XJsr303Annotations</extraarg>
+                            <extraarg>-xjc-XJsr303Annotations:validationAnnotations=jakarta</extraarg>
+
                             <extraarg>-xjc-Xfluent-api</extraarg>
                             <extraarg>-xjc-Xinheritance</extraarg>
                             <extraarg>-xjc-Xannotate</extraarg>
-                            <!--<extraarg>-verbose</extraarg>-->
                             <extraarg>-exsh</extraarg>
                             <extraarg>true</extraarg>
                         </extraargs>
@@ -65,6 +71,12 @@
                         <groupId>org.jvnet.jaxb</groupId>
                         <artifactId>jaxb-plugin-annotate</artifactId>
                         <version>4.0.8</version>
+                    </dependency>
+                    <!-- provides validation -->
+                    <dependency>
+                        <groupId>com.fillumina</groupId>
+                        <artifactId>krasa-jaxb-tools</artifactId>
+                        <version>2.5.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
