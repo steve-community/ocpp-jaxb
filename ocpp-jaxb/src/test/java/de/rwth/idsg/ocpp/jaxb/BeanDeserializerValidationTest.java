@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BeanValidationTest {
+public class BeanDeserializerValidationTest {
 
     private static ObjectMapper mapper;
 
@@ -25,7 +25,7 @@ public class BeanValidationTest {
     public static void setup() {
         mapper = JsonMapper.builder()
             .addModule(new JodaModule())
-            .addModule(new BeanValidationModule())
+            .addModule(BeanValidationModule.forReading(null))
             .build();
     }
 
