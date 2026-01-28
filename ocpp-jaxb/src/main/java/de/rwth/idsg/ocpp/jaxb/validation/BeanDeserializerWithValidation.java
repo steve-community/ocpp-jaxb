@@ -6,7 +6,6 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.deser.bean.BeanDeserializer;
 
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
 /**
@@ -16,22 +15,20 @@ public class BeanDeserializerWithValidation extends BeanDeserializer {
 
     private final Validator validator;
 
-    public BeanDeserializerWithValidation(BeanDeserializer src) {
+    public BeanDeserializerWithValidation(BeanDeserializer src, Validator validator) {
         super(src);
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
+        this.validator = validator;
     }
 
     @Override
     public Object deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
         var instance = super.deserialize(p, ctxt);
-        validate(instance);
-        return instance;
-    }
 
-    private void validate(Object instance) {
         var violations = validator.validate(instance);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
+
+        return instance;
     }
 }

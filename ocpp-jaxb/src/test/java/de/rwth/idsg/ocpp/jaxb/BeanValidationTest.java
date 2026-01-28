@@ -4,6 +4,7 @@ import de.rwth.idsg.ocpp.jaxb.validation.BeanValidationModule;
 import ocpp.cs._2015._10.StartTransactionRequest;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
@@ -18,15 +19,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BeanValidationTest {
 
-    private final ObjectMapper mapper = JsonMapper.builder()
-        .addModule(new JodaModule())
-        .addModule(new BeanValidationModule())
-        .build();
+    private static ObjectMapper mapper;
+
+    @BeforeAll
+    public static void setup() {
+        mapper = JsonMapper.builder()
+            .addModule(new JodaModule())
+            .addModule(new BeanValidationModule())
+            .build();
+    }
 
     @Test
     public void nullFieldsOcpp12() {
         String input = mapper.writeValueAsString(new ocpp.cs._2010._08.StartTransactionRequest());
-        System.out.println(input);
 
         var exception = assertThrows(ConstraintViolationException.class, () -> mapper.readValue(input, ocpp.cs._2010._08.StartTransactionRequest.class));
 
@@ -37,7 +42,6 @@ public class BeanValidationTest {
     @Test
     public void nullFieldsOcpp15() {
         String input = mapper.writeValueAsString(new ocpp.cs._2012._06.StartTransactionRequest());
-        System.out.println(input);
 
         var exception = assertThrows(ConstraintViolationException.class, () -> mapper.readValue(input, ocpp.cs._2012._06.StartTransactionRequest.class));
 
@@ -48,7 +52,6 @@ public class BeanValidationTest {
     @Test
     public void nullFieldsOcpp16() {
         String input = mapper.writeValueAsString(new ocpp.cs._2015._10.StartTransactionRequest());
-        System.out.println(input);
 
         var exception = assertThrows(ConstraintViolationException.class, () -> mapper.readValue(input, ocpp.cs._2015._10.StartTransactionRequest.class));
 
@@ -59,7 +62,6 @@ public class BeanValidationTest {
     @Test
     public void nullFieldsOcpp16Security() {
         String input = mapper.writeValueAsString(new ocpp._2022._02.security.SecurityEventNotification());
-        System.out.println(input);
 
         var exception = assertThrows(ConstraintViolationException.class, () -> mapper.readValue(input, ocpp._2022._02.security.SecurityEventNotification.class));
 
@@ -70,7 +72,6 @@ public class BeanValidationTest {
     @Test
     public void nullFieldsOcpp2() {
         String input = mapper.writeValueAsString(new ocpp._2020._03.SecurityEventNotificationRequest());
-        System.out.println(input);
 
         var exception = assertThrows(ConstraintViolationException.class, () -> mapper.readValue(input, ocpp._2020._03.SecurityEventNotificationRequest.class));
 
