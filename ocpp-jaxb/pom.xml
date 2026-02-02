@@ -14,6 +14,7 @@
     <properties>
         <ocpp-1.6-security-schemas-dir>OCPP-1.6_Security_3rd_Edition_schemas</ocpp-1.6-security-schemas-dir>
         <ocpp-2.0.1-schemas-dir>OCPP-2.0.1_part3_JSON_schemas</ocpp-2.0.1-schemas-dir>
+        <ocpp-2.1-schemas-dir>OCPP-2.1_part3_JSON_schemas</ocpp-2.1-schemas-dir>
     </properties>
 
     <build>
@@ -106,9 +107,7 @@
                             <replacements>
                                 <replacement>
                                     <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"],
-                                        "\$schema"</value>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -126,9 +125,7 @@
                             <replacements>
                                 <replacement>
                                     <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"],
-                                        "\$schema"</value>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -147,9 +144,7 @@
                             <replacements>
                                 <replacement>
                                     <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"],
-                                        "\$schema"</value>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -167,13 +162,49 @@
                             <replacements>
                                 <replacement>
                                     <token>"\$schema"</token>
-                                    <!-- &#10; is html code for line break -->
-                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"],
-                                        "\$schema"</value>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], "\$schema"</value>
                                 </replacement>
                             </replacements>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>add-request-interface-ocpp-2.1</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <filesToInclude>${basedir}/src/main/resources/${ocpp-2.1-schemas-dir}/*Request.json</filesToInclude>
+                            <preserveDir>false</preserveDir>
+                            <outputDir>${project.build.directory}/generated-resources/${ocpp-2.1-schemas-dir}</outputDir>
+                            <replacements>
+                                <replacement>
+                                    <token>"\$schema"</token>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.RequestType"], "\$schema"</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-response-interface-ocpp-2.1</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <filesToInclude>${basedir}/src/main/resources/${ocpp-2.1-schemas-dir}/*Response.json</filesToInclude>
+                            <preserveDir>false</preserveDir>
+                            <outputDir>${project.build.directory}/generated-resources/${ocpp-2.1-schemas-dir}</outputDir>
+                            <replacements>
+                                <replacement>
+                                    <token>"\$schema"</token>
+                                    <value>"javaInterfaces" : ["de.rwth.idsg.ocpp.jaxb.ResponseType"], "\$schema"</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
             <plugin>
@@ -218,6 +249,17 @@
                         <configuration>
                             <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-2.0.1-schemas-dir}</sourceDirectory>
                             <targetPackage>ocpp._2020._03</targetPackage>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-ocpp-2.1</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${project.build.directory}/generated-resources/${ocpp-2.1-schemas-dir}</sourceDirectory>
+                            <targetPackage>ocpp._2025._01</targetPackage>
                         </configuration>
                     </execution>
                 </executions>
