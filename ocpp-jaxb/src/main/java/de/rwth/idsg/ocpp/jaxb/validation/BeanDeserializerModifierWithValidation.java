@@ -5,9 +5,8 @@ import tools.jackson.databind.BeanDescription.Supplier;
 import tools.jackson.databind.DeserializationConfig;
 import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.deser.ValueDeserializerModifier;
-import tools.jackson.databind.deser.bean.BeanDeserializer;
+import tools.jackson.databind.deser.bean.BeanDeserializerBase;
 
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
 /**
@@ -22,8 +21,8 @@ public class BeanDeserializerModifierWithValidation extends ValueDeserializerMod
     public ValueDeserializer<?> modifyDeserializer(DeserializationConfig config,
                                                    Supplier beanDescRef,
                                                    ValueDeserializer<?> deserializer) {
-        if (deserializer instanceof BeanDeserializer) {
-            return new BeanDeserializerWithValidation((BeanDeserializer) deserializer, validator);
+        if (deserializer instanceof BeanDeserializerBase) {
+            return new BeanDeserializerWithValidation(deserializer, validator);
         }
 
         return deserializer;
