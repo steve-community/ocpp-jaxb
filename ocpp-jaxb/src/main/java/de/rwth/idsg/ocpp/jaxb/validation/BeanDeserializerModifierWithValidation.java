@@ -16,13 +16,14 @@ import jakarta.validation.Validator;
 public class BeanDeserializerModifierWithValidation extends ValueDeserializerModifier {
 
     private final Validator validator;
+    private final StrictnessMode strictnessMode;
 
     @Override
     public ValueDeserializer<?> modifyDeserializer(DeserializationConfig config,
                                                    Supplier beanDescRef,
                                                    ValueDeserializer<?> deserializer) {
         if (deserializer instanceof BeanDeserializerBase) {
-            return new BeanDeserializerWithValidation(deserializer, validator);
+            return new BeanDeserializerWithValidation(deserializer, validator, strictnessMode);
         }
 
         return deserializer;

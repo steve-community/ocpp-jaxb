@@ -1,5 +1,6 @@
 package de.rwth.idsg.ocpp.jaxb.validation;
 
+import lombok.extern.slf4j.Slf4j;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
@@ -13,18 +14,22 @@ import jakarta.validation.Validator;
 /**
  * https://www.baeldung.com/java-object-validation-deserialization
  */
+@Slf4j
 public class BeanDeserializerWithValidation extends DelegatingDeserializer {
 
     private final Validator validator;
+    private final StrictnessMode strictnessMode;
 
-    protected BeanDeserializerWithValidation(ValueDeserializer<?> delegate, Validator validator) {
+    protected BeanDeserializerWithValidation(ValueDeserializer<?> delegate, Validator validator,
+                                             StrictnessMode strictnessMode) {
         super(delegate);
         this.validator = validator;
+        this.strictnessMode = strictnessMode;
     }
 
     @Override
     protected ValueDeserializer<?> newDelegatingInstance(ValueDeserializer<?> newDelegate) {
-        return new BeanDeserializerWithValidation(newDelegate, validator);
+        return new BeanDeserializerWithValidation(newDelegate, validator, strictnessMode);
     }
 
     @Override
@@ -50,8 +55,14 @@ public class BeanDeserializerWithValidation extends DelegatingDeserializer {
 
     private <T> void validate(T object) {
         var violations = validator.validate(object);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
+        if (violations.isEmpty()) {
+            return;
+        }
+
+        var exception = new ConstraintViolationException(violations);
+        switch (strictnessMode) {
+            case LogWarning -> log.warn("There are constraint violations", exception);
+            case ThrowError -> throw exception;
         }
     }
 }
