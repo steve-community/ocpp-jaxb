@@ -1,5 +1,6 @@
 package de.rwth.idsg.ocpp.jaxb.validation;
 
+import lombok.Builder;
 import tools.jackson.databind.module.SimpleModule;
 
 import jakarta.validation.Validation;
@@ -10,30 +11,47 @@ import jakarta.validation.Validator;
  */
 public class BeanValidationModule extends SimpleModule {
 
-    private BeanValidationModule(Validator validator, boolean forReading, boolean forWriting) {
+    @Builder
+    private BeanValidationModule(Validator validator, StrictnessMode readingMode, StrictnessMode writingMode) {
+        if (readingMode == null && writingMode == null) {
+            throw new NullPointerException("readingMode and writingMode are null");
+        }
+
         Validator validatorToUse = validator == null
             ? Validation.buildDefaultValidatorFactory().getValidator()
             : validator;
 
-        if (forReading) {
-            setDeserializerModifier(new BeanDeserializerModifierWithValidation(validatorToUse));
+        if (readingMode != null) {
+            setDeserializerModifier(new BeanDeserializerModifierWithValidation(validatorToUse, readingMode));
         }
 
-        if (forWriting) {
-            setSerializerModifier(new BeanSerializerModifierWithValidation(validatorToUse));
+        if (writingMode != null) {
+            setSerializerModifier(new BeanSerializerModifierWithValidation(validatorToUse, writingMode));
         }
     }
 
     public static BeanValidationModule forReading(Validator validator) {
-        return new BeanValidationModule(validator, true, false);
+        return BeanValidationModule.builder()
+            .validator(validator)
+            .readingMode(StrictnessMode.ThrowError)
+            .writingMode(null)
+            .build();
     }
 
     public static BeanValidationModule forWriting(Validator validator) {
-        return new BeanValidationModule(validator, false, true);
+        return BeanValidationModule.builder()
+            .validator(validator)
+            .readingMode(null)
+            .writingMode(StrictnessMode.ThrowError)
+            .build();
     }
 
     public static BeanValidationModule forReadingAndWriting(Validator validator) {
-        return new BeanValidationModule(validator, true, true);
+        return BeanValidationModule.builder()
+            .validator(validator)
+            .readingMode(StrictnessMode.ThrowError)
+            .writingMode(StrictnessMode.ThrowError)
+            .build();
     }
 
 }

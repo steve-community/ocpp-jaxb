@@ -13,13 +13,14 @@ import jakarta.validation.Validator;
 public class BeanSerializerModifierWithValidation extends ValueSerializerModifier {
 
     private final Validator validator;
+    private final StrictnessMode strictnessMode;
 
     @Override
     public ValueSerializer<?> modifySerializer(SerializationConfig config,
                                                BeanDescription.Supplier beanDesc,
                                                ValueSerializer<?> serializer) {
         if (serializer instanceof BeanSerializerBase) {
-            return new BeanSerializerWithValidation((BeanSerializerBase) serializer, validator);
+            return new BeanSerializerWithValidation((BeanSerializerBase) serializer, validator, strictnessMode);
         }
 
         return serializer;
