@@ -221,6 +221,7 @@
                     <useJodaLocalDates>true</useJodaLocalDates>
                     <useJodaLocalTimes>true</useJodaLocalTimes>
                     <customAnnotator>de.rwth.idsg.ocpp.jaxb.CustomAnnotator</customAnnotator>
+                    <initializeCollections>false</initializeCollections>
 
                     <includeToString>false</includeToString>
                     <includeGetters>false</includeGetters>
