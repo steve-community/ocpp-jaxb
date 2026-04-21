@@ -3,6 +3,7 @@ package de.rwth.idsg.ocpp.jaxb;
 import de.rwth.idsg.ocpp.jaxb.validation.BeanValidationModule;
 import ocpp._2020._03.CustomData;
 import ocpp._2020._03.SecurityEventNotificationRequest;
+import ocpp._2022._02.security.GetInstalledCertificateIdsResponse;
 import ocpp.cs._2015._10.AuthorizeResponse;
 import ocpp.cs._2015._10.IdTagInfo;
 import ocpp.cs._2015._10.StartTransactionRequest;
@@ -136,6 +137,50 @@ public class BeanDeserializerValidationTest {
         Assertions.assertInstanceOf(ConstraintViolationException.class, cause);
 
         Assertions.assertEquals("status: must not be null", cause.getMessage());
+    }
+
+    /**
+     * https://github.com/steve-community/ocpp-jaxb/issues/31
+     */
+    @Test
+    public void testWithEmptyCollection() {
+        String payload = "{\"certificateHashData\":[],\"status\":\"Accepted\"}";
+
+        var exception = assertThrows(ConstraintViolationException.class, () -> mapper.readValue(payload, GetInstalledCertificateIdsResponse.class));
+
+        var violations = exception.getConstraintViolations();
+        Assertions.assertEquals(1, violations.size());
+
+        ConstraintViolation<?> violation = violations.iterator().next();
+
+        Assertions.assertEquals("certificateHashData", violation.getPropertyPath().toString());
+        Assertions.assertEquals("size must be between 1 and 2147483647", violation.getMessage());
+    }
+
+    /**
+     * https://github.com/steve-community/ocpp-jaxb/issues/31
+     */
+    @Test
+    public void testWithNullCollection() {
+        String payload = "{\"certificateHashData\":null,\"status\":\"Accepted\"}";
+
+        var instance = mapper.readValue(payload, GetInstalledCertificateIdsResponse.class);
+
+        Assertions.assertEquals(GetInstalledCertificateIdsResponse.GetInstalledCertificateStatusEnumType.ACCEPTED, instance.getStatus());
+        Assertions.assertNull(instance.getCertificateHashData());
+    }
+
+    /**
+     * https://github.com/steve-community/ocpp-jaxb/issues/31
+     */
+    @Test
+    public void testWithMissingCollection() {
+        String payload = "{\"status\":\"Accepted\"}";
+
+        var instance = mapper.readValue(payload, GetInstalledCertificateIdsResponse.class);
+
+        Assertions.assertEquals(GetInstalledCertificateIdsResponse.GetInstalledCertificateStatusEnumType.ACCEPTED, instance.getStatus());
+        Assertions.assertNull(instance.getCertificateHashData());
     }
 
     private static void checkViolatingNullFields(Set<String> expected, Set<ConstraintViolation<?>> violations) {
