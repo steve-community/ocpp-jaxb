@@ -66,12 +66,12 @@
                     <dependency>
                         <groupId>org.jvnet.jaxb</groupId>
                         <artifactId>jaxb-plugins</artifactId>
-                        <version>4.0.8</version>
+                        <version>4.0.16</version>
                     </dependency>
                     <dependency>
                         <groupId>org.jvnet.jaxb</groupId>
                         <artifactId>jaxb-plugin-annotate</artifactId>
-                        <version>4.0.8</version>
+                        <version>4.0.16</version>
                     </dependency>
                     <!-- provides validation -->
                     <dependency>
@@ -265,6 +265,11 @@
                     </execution>
                 </executions>
                 <dependencies>
+                    <dependency>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>${lombok.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>ocpp-custom</artifactId>
