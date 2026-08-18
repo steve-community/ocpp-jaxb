@@ -66,12 +66,12 @@
                     <dependency>
                         <groupId>org.jvnet.jaxb</groupId>
                         <artifactId>jaxb-plugins</artifactId>
-                        <version>4.0.8</version>
+                        <version>4.0.16</version>
                     </dependency>
                     <dependency>
                         <groupId>org.jvnet.jaxb</groupId>
                         <artifactId>jaxb-plugin-annotate</artifactId>
-                        <version>4.0.8</version>
+                        <version>4.0.16</version>
                     </dependency>
                     <!-- provides validation -->
                     <dependency>
